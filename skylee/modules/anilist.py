@@ -20,15 +20,17 @@
 
 from telegram.ext.dispatcher import run_async
 import requests
+import time
+import bs4
+import html
 from pyrogram import filters
-from pyrogram.types import (InlineKeyboardMarkup,InlineKeyboardButton,InlineQueryResultArticle,InputTextMessageContent)
 from telegram.ext import CommandHandler, CallbackContext
 from telegram import Update, Bot
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from skylee import dispatcher,pbot,telegraph
-import requests
-import math
-import time
+from pyrogram import Client, filters
+from pyrogram.types import Message
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Update
 
 
 def shorten(description, info="anilist.co"):
