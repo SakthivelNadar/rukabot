@@ -4,7 +4,8 @@ import sys
 import spamwatch
 from telethon import TelegramClient
 import telegram.ext as tg
-
+from pyrogram import Client
+from telegraph import Telegraph
 # enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -151,7 +152,10 @@ else:
 api_id = TELETHON_ID
 api_hash = TELETHON_HASH
 client = TelegramClient("skylee", api_id, api_hash)
-
+telegraph = Telegraph()
+telegraph.create_account(short_name='bot')
+Pbot = TelegramClient("skylee",api_id,api_hash )
+pbot = Client("skyleePyro", api_id, api_hash , bot_token=TOKEN)
 updater = tg.Updater(TOKEN, workers=WORKERS, use_context=True)
 
 dispatcher = updater.dispatcher
