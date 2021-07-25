@@ -376,12 +376,14 @@ def manga(update: Update, context: CallbackContext):
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
 
-
-
-@pbot.on_message(~filters.me & filters.command('nhentai', prefixes='/'), group=8)
-async def nhentai(client, message):
-    query = message.text.split(" ")[1]
-    title, tags, artist, total_pages, post_url, cover_image = nhentai_data(query)
+@pbot.on_message(filters.command("nhentai"))
+async def nhentai(_, message):
+    if len(message.command) < 2:
+        await message.delete()
+        return
+    query = message.text.split(None, 1)[1]
+    title, tags, artist, total_pages, post_url, cover_image = nhentai_data(
+        query)
     await message.reply_text(
         f"<code>{title}</code>\n\n<b>Tags:</b>\n{tags}\n<b>Artists:</b>\n{artist}\n<b>Pages:</b>\n{total_pages}",
         reply_markup=InlineKeyboardMarkup(
@@ -396,6 +398,7 @@ async def nhentai(client, message):
         )
     )
 
+
 def nhentai_data(noombers):
     url = f"https://nhentai.net/api/gallery/{noombers}"
     res = requests.get(url).json()
@@ -407,9 +410,9 @@ def nhentai_data(noombers):
     artist = ''
     total_pages = res['num_pages']
     extensions = {
-        'j':'jpg',
-        'p':'png',
-        'g':'gif'
+        'j': 'jpg',
+        'p': 'png',
+        'g': 'gif'
     }
     for i, x in enumerate(pages):
         media_id = res["media_id"]
@@ -419,23 +422,25 @@ def nhentai_data(noombers):
         links.append(link)
 
     for i in info:
-        if i["type"]=="tag":
+        if i["type"] == "tag":
             tag = i['name']
             tag = tag.split(" ")
             tag = "_".join(tag)
-            tags+=f"#{tag} "
-        if i["type"]=="artist":
-            artist=f"{i['name']} "
+            tags += f"#{tag} "
+        if i["type"] == "artist":
+            artist = f"{i['name']} "
 
     post_content = "".join(f"<img src={link}><br>" for link in links)
 
     post = telegraph.create_page(
         f"{title}",
         html_content=post_content,
-        author_name="@skylee", 
+        author_name="@skylee",
         author_url="https://t.me/skylee"
     )
-    return title,tags,artist,total_pages,post['url'],links[0]
+    return title, tags, artist, total_pages, post['url'], links[0]
+
+
 
 AIRING_HANDLER = CommandHandler("airing", airing)
 ANIME_HANDLER = CommandHandler("anime", anime)
