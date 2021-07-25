@@ -18,6 +18,7 @@ telegraph
 pillow
 psutil
 pyrogram
+tgcrypto
 speedtest-cli>=2.0.2
 googletrans
 wikipedia
