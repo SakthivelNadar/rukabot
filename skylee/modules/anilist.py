@@ -30,8 +30,9 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from skylee import dispatcher,pbot,telegraph
 from pyrogram import Client, filters
 from pyrogram.types import Message
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Update
-
+from pyrogram.types import Update
+from pyrogram.types import InlineKeyboardMarkup as InlineKeyMarkup
+from pyrogram.types import InlineKeyboardButton as InlineKeyButton
 
 def shorten(description, info="anilist.co"):
     msg = ""
@@ -388,10 +389,10 @@ async def nhentai(_, message):
         query)
     await message.reply_text(
         f"<code>{title}</code>\n\n<b>Tags:</b>\n{tags}\n<b>Artists:</b>\n{artist}\n<b>Pages:</b>\n{total_pages}",
-        reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyMarkup(
             [
                 [
-                    InlineKeyboardButton(
+                    InlineKeyButton(
                         "Read Here",
                         url=post_url
                     )
