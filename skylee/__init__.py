@@ -154,7 +154,6 @@ api_hash = TELETHON_HASH
 client = TelegramClient("skylee", api_id, api_hash)
 telegraph = Telegraph()
 telegraph.create_account(short_name='bot')
-Pbot = TelegramClient("skylee",api_id,api_hash )
 pbot = Client("skyleePyro", api_id, api_hash , bot_token=TOKEN)
 updater = tg.Updater(TOKEN, workers=WORKERS, use_context=True)
 
