@@ -17,8 +17,8 @@ bs4
 telegraph
 pillow
 psutil
-pyrogram
-tgcrypto
+pyrogram>=1.2.9
+tgCrypto>=1.2.2
 speedtest-cli>=2.0.2
 googletrans
 wikipedia
