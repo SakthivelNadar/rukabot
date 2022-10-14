@@ -14,6 +14,7 @@ from skylee.modules.helper_funcs.chat_status import (
     can_restrict,
     is_user_admin,
     is_user_in_chat,
+    can_delete
 )
 from skylee.modules.helper_funcs.extraction import extract_user_and_text
 from skylee.modules.helper_funcs.string_handling import extract_time
@@ -57,6 +58,20 @@ def ban(update, context):
         message.reply_text("I'm not gonna ban an admin, don't make fun of yourself!")
         return ""
 
+    if message.text.startswith("/d") or message.text.startswith("!d"):
+        dban = True
+        if not can_delete(chat, context.bot.id):
+            return ""
+    else:
+        dban = False
+
+    if message.text.startswith("/s") or message.text.startswith("!s"):
+        silent = True
+        if not can_delete(chat, context.bot.id):
+            return ""
+    else:
+        silent = False
+
     if user_id == context.bot.id:
         message.reply_text("I'm not gonna BAN myself, are you crazy or wot?")
         return ""
@@ -78,6 +93,18 @@ def ban(update, context):
     try:
         chat.kick_member(user_id)
         # context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
+        if dban:
+            if message.reply_to_message:
+                message.reply_to_message.delete()
+
+            return log
+        
+        if silent:
+            if message.reply_to_message:
+                message.reply_to_message.delete()
+            message.delete()
+            return log
+        
         context.bot.sendMessage(
             chat.id,
             "let {} walk the plank.".format(
@@ -401,7 +428,7 @@ An example of temporarily banning someone:
 
 __mod_name__ = "Bans"
 
-BAN_HANDLER = CommandHandler("ban", ban, pass_args=True, filters=Filters.group)
+BAN_HANDLER = CommandHandler(["ban","dban","sban"], ban, pass_args=True, filters=Filters.group)
 TEMPBAN_HANDLER = CommandHandler(
     ["tban", "tempban"], temp_ban, pass_args=True, filters=Filters.group
 )
